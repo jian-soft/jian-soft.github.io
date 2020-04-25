@@ -1,10 +1,6 @@
-# hello world
-* hello world
-hello world
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
-- use Github Desktop to add this line
-- use Vim to add this line
-- use Vim in ubuntu to add this line
-
-
-
+layout: home
+---
