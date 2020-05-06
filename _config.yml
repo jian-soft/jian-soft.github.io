@@ -28,9 +28,22 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  jian-soft
 
 # Build settings
-theme: minima
+# theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-include-cache
+github:
+repository: twozh/twozh
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:  
+      layout: single
+      toc: true
+      toc_label: "目录"
+      toc_sticky: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
