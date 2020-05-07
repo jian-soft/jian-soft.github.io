@@ -33,7 +33,7 @@ plugins:
   - jekyll-feed
   - jekyll-include-cache
 github:
-repository: twozh/twozh
+locale: zh
 
 defaults:
   - scope:
