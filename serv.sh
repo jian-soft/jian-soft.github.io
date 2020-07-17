@@ -1,2 +1,2 @@
 #!/bin/sh
-bundle exec jekyll serve -H 192.168.2.130
+bundle exec jekyll serve -H 45.113.0.36 
