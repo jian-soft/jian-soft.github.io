@@ -1,3 +1,6 @@
+---
+title: 配置Nginx静态HTTPS Web服务器
+---
 ## Nginx介绍
 
 Nginx(engine x)是一个高性能的HTTP服务器和反向代理服务器。
