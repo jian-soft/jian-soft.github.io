@@ -1,2 +1,2 @@
 #!/bin/sh
-bundle exec jekyll serve -H 45.113.0.36 
+bundle exec jekyll serve -H 103.52.155.56
