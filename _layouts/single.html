@@ -66,6 +66,15 @@ layout: default
     {% if jekyll.environment == 'production' and site.comments.provider and page.comments %}
       {% include comments.html %}
     {% endif %}
+    <div id="vcomments"></div>
+    <script>
+        new Valine({
+            el: '#vcomments',
+            appId: 'NWp6lRStuiAuyq4VAN6VQ3x4-gzGzoHsz',
+            appKey: '3yjxOSsxpvlKwCdX07IQ9mtr'
+        })
+    </script>
+
   </article>
 
   {% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
@@ -92,4 +101,5 @@ layout: default
       </div>
     </div>
   {% endif %}
+
 </div>

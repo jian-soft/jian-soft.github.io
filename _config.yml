@@ -66,3 +66,7 @@ exclude:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+# My site data
+head_scripts:
+    - "//unpkg.com/valine/dist/Valine.min.js"
