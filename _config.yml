@@ -31,7 +31,7 @@ twitter_username: jian_soft
 github_username:  jian-soft
 
 # Build settings
-theme: jekyll-theme-minimal
+theme: minima
 plugins:
   - jekyll-feed
 
