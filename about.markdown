@@ -4,15 +4,10 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Jiansoft, 深耕信息技术，为用户创造价值 
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+本博客专注WiFi, Kernel, Network, IoT Both software and hardware
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+博主国内985大学电子与通信工程研究生毕业，就职过华为、大疆，目前自由职业，关注IoT相关创业项目。本博客用来发表平时的技术学习文章。
 
-
-[jekyll-organization]: https://github.com/jekyll
+jiansoft.net
