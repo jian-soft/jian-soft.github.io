@@ -5,7 +5,7 @@ title: Jekyll详细教程
 {% raw %}
 ## 设置
 ### 安装
-上一篇[《Jekyll快速开始教程》](/2020/04/26/Jekyll快速开始教程.html)中使用的是jekyll自带的new命令来创建网站，本篇我们从头开始一步一步建立Jekyll网站。
+上一篇[《Jekyll快速开始教程》](/2020/04/26/Jekyll_quick_start.html)中使用的是jekyll自带的new命令来创建网站，本篇我们从头开始一步一步建立Jekyll网站。
 使用下面命令创建一个新的Gemfile，用来管理项目的依赖:
 ```
 bundle init
