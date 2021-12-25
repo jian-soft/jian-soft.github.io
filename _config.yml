@@ -25,7 +25,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   深耕信息技术, 为用户创造价值. 
   专注于WiFi, Kernel, Network, IoT, both software and hardware
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://jiansoft.net" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jian_soft
 github_username:  jian-soft
 
