@@ -86,15 +86,15 @@ OBJS = helloworld.o
 
 $(TARGET):$(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
-			
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-			
+
 .PHONY: clean
 clean:
 	rm -f $(TARGET) $(OBJS)
 ```
-说明：这里的$(CC)、$(CFLAGS)、$(LDFLAGS)都是由OpenWRT的build系统赋值，CC就是目标平台对应的交叉编译工具链里的gcc。
+说明：这里的$(CC)、$(CFLAGS)、$(LDFLAGS)都是由OpenWRT的build系统赋值的，CC就是目标平台对应的交叉编译工具链里的gcc。
 
 ## 测试
 
@@ -118,7 +118,9 @@ make package/utils/jsonpath/{clean,compile} V=s
 本文源码见：
 <https://github.com/jian-soft/openwrt-package-example>
 
---------
+<br>
+
+------------
 参考文章：
 - <https://openwrt.org/docs/guide-developer/packages>
 - <https://openwrt.org/zh-cn/doc/devel/packages>
