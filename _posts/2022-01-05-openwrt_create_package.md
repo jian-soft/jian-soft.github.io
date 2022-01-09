@@ -112,7 +112,7 @@ build_dir/target-XXXX/helloworld-1.0
 
 如果要再次编译，可以执行：
 ```
-make package/utils/jsonpath/{clean,compile} V=s
+make package/helloworld/{clean,compile} V=s
 ```
 
 本文源码见：
