@@ -97,6 +97,5 @@ print(categories)  #打印图像分类结果
 
 ---
 参考链接：
-
-https://tensorflow.google.cn/lite/guide/python （注意语言选择英语，汉语的内容更新较慢）
+- <https://tensorflow.google.cn/lite/guide/python> （注意语言选择英语，汉语的内容更新较慢）
 
