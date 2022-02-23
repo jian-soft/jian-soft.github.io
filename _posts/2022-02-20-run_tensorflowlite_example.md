@@ -22,6 +22,7 @@ python3 -m pip install tflite-runtime
 
 1. 创建~/.pip/pip.conf
 2. 在其中添加或修改：
+
 ```
 [global]
 index-url = https://mirrors.aliyun.com/pypi/simple/
