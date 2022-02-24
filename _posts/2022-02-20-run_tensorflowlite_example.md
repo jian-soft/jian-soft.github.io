@@ -94,6 +94,9 @@ print(categories)  #打印图像分类结果
 即在我的PC上，对test/fox.jpeg文件运行一次efficientnet_lite0.tflite模型，耗时36ms。
 识别test/fox.jpeg图片是"red fox"的概率为77.7%。
 
+附：test/fox.jpeg
+![fox.jpeg](/assets/image/2022/02/fox.jpeg)
+
 
 ---
 参考链接：
