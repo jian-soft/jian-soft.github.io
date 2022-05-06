@@ -8,8 +8,6 @@ title: Linux netlink详解
 本文学习下Linux的netlink，给出用户空间与内核空间基于netlink通信的示例。
 示例包括netlink和generic netlink。用户空间程序包括基于原生Linux API和基于libnl API。
 
-完整示例见github: <https://github.com/jian-soft/netlink_examples>
-
 ## netlink基础
 
 netlink协议是一个基于socket的，用于内核与用户空间进程通信的一个协议。
@@ -23,14 +21,14 @@ int socket(int domain, int type, int protocol);
 //这里用到了第三个入参protocol，即创建Netlink socket时要指定协议号
 ```
 内核态创建netlink socket的接口原型为：
-```
+```c
 struct sock *
 netlink_kernel_create(struct net *net, int unit, struct netlink_kernel_cfg *cfg)
 //这里的第二个参数unit为协议号，与用户空间的protocol相同
 ```
 
 Netlink消息有固定的格式，struct nlmsghdr
-```
+```c
 struct nlmsghdr {
     __u32       nlmsg_len;  /* Length of message including header */
     __u16       nlmsg_type; /* Message content */
@@ -40,13 +38,15 @@ struct nlmsghdr {
 };
 ```
 
-完整示例见github，以下为关键代码注释。
+完整示例见github: <https://github.com/jian-soft/netlink_examples>
+
+下文为关键代码注释。
 
 ## 原生Linux API示例
 
 ### 内核侧示例
 
-```
+```c
 //定义自己的netlink协议号
 #define MY_NETLINK 31
 
@@ -78,7 +78,7 @@ if (!g_nl_sock) {
 
 ### 用户侧示例
 
-```
+```c
 int main(int argc, char* argv[])
 {
     //创建socket
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 另外wpa_supplicant与内核wifi驱动的通信就是用的libnl generic netlink API。
 
 先介绍下libnl的主要接口，定义在头文件<netlink/netlink.h>
-```
+```c
 //创建netlink socket, libnl中用struct nl_sock表示一个socket
 #include <netlink/socket.h>
 struct nl_sock *nl_socket_alloc(void)
@@ -140,7 +140,7 @@ int nl_recvmsgs(struct nl_sock *sk, struct nl_cb *cb)
 
 基于上一节的例子，内核测代码不变，用户侧使用libnl重写。
 
-```
+```c
 #include <netlink/netlink.h>
 #include <netlink/msg.h>
 
@@ -188,8 +188,8 @@ netlink通信协议在不修改内核源码的情况下，最大只支持定义3
 generic netlink其实是对netlink报文进行了又一次封装，generic netlink使用的netlink协议号是NETLINK_GENERIC=16。
 
 genl的消息格式如下：
-```
- 0                   1                   2                   3
+```c
+  0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |                Netlink message header (nlmsghdr)              |
@@ -238,7 +238,7 @@ https://wiki.linuxfoundation.org/networking/generic_netlink_howto
 2. 定义family
 3. 注册family
 
-```
+```c
 /* Step1: 定义操作 */
 /* attributes */
 enum {
@@ -270,7 +270,7 @@ struct genl_ops exmpl_genl_ops[EXMPL_C_MAX] = {
 };
 ```
 
-```
+```c
 #define FAMILY_NAME "my_genl"
 /* Step2: 定义family */
 // family definition
@@ -321,7 +321,7 @@ static int exmpl_echo(struct sk_buff *skb, struct genl_info *info)
 }
 ```
 
-```
+```c
 /* Step3: 注册famliy */
 int ret;
 ret = genl_register_family(&my_genl_family);
@@ -334,7 +334,7 @@ if (err != 0) {
 
 ### genl用户侧示例(基于libnl)
 
-```
+```c
 #define MY_FAMILY_NAME "my_genl"
 
 //用户侧需要定义和内核侧相同的属性以及命令，所以通常把这一部分摘成一个独立的.h，内核和app共用
@@ -437,4 +437,6 @@ nla_put_failure: //referenced by NLA_PUT_STRING
 这时一般用组播netlink消息，即内核将消息组播出去。用户空间谁订阅了这个组播，谁就能收到内核发来的消息。
 关于组播netlink示例，后续有空再补一下。。。
 
+----
 
+完整示例见github: <https://github.com/jian-soft/netlink_examples>
