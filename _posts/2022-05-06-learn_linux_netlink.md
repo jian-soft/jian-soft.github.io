@@ -15,7 +15,7 @@ title: Linux netlink详解
 netlink协议是一个基于socket的，用于内核与用户空间进程通信的一个协议。
 
 用户态创建netlink socket的代码如下：
-```
+```c
 int fd = socket(AF_NETLINK, SOCK_RAW, MY_NETLINK)
 
 //socket接口的原型为：
