@@ -5,12 +5,12 @@
 
 import os
 
-gitee_path = "/var/www/site/_site"
+gitee_path = "/var/www/html/"
 site_path = "_site/*"
 print("*******************************")
 print("build...")
 os.system("bundle exec jekyll build")
-os.system("rm _site/d_hks.py _site/serv.sh")
+os.system("rm _site/*.py _site/*.sh")
 
 
 print("*******************************")
