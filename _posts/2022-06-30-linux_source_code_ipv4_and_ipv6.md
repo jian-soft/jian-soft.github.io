@@ -54,6 +54,16 @@ static int inet_init(void)
         arp_proc_init()  //cat /proc/net/arp, 查看arp表项
         register_netdevice_notifier(&arp_netdev_notifier)  //注册netdevice事件监听
     ip_init()
+        ip_rt_init //ip路由相关的初始化
+            devinet_init
+                //注册netdevice时间回调
+                register_netdevice_notifier(&ip_netdev_notifier);
+                    //这里ip_netdev_notifier的回调函数是inetdev_event，看下这个回调
+                    int inetdev_event(struct notifier_block *this, unsigned long event,void *ptr)
+                        if (event == NETDEV_REGISTER)
+                            //给net_device创建in_device，in_device即ip相关的配置，比如ip地址
+                            //可以通过ip或ifconfig来修改
+                            in_dev = inetdev_init(dev);
     tcp_init()
     udp_init()
     ping_init()
@@ -199,6 +209,11 @@ int ip_queue_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl)
     skb_dst_set_noref(skb, &rt->dst);
     ... //此处是一些填写ip header的逻辑
     res = ip_local_out(net, sk, skb);
+        __ip_local_out
+            //netfilter钩子挂载点NF_INET_LOCAL_OUT
+            nf_hook(NFPROTO_IPV4, NF_INET_LOCAL_OUT,
+               net, sk, skb, NULL, skb_dst(skb)->dev,
+               dst_output);
         dst_output(net, sk, skb)
             skb_dst(skb)->output(net, sk, skb)  //一般地，这里的output是ip_output
 
