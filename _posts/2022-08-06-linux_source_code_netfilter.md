@@ -8,17 +8,17 @@ Netfilter子系统包含数据包选择、过滤、修改，连接跟踪，网�
 
 ## Netfilter挂载点
 
-在上篇《Linux内核源码走读之IPv4及IPv6》文章中，我们在IPv4和IPv6的接收和发送路径中，看到过这些挂载点。
+在上篇[《Linux内核源码走读之IPv4及IPv6》](/2022/05/06/learn_linux_netlink.html)文章中，我们在IPv4和IPv6的接收和发送路径中，看到过这些挂载点。
 
-- NF_INET_PRE_ROUTING: 在IPv4中，这个挂载点微羽方法ip_rcv()中。这是所有入站数据包遇到的第一个挂载点，它处于在路由选择之前。
+- **NF_INET_PRE_ROUTING**: 在IPv4中，这个挂载点位于方法ip_rcv()中。这是所有入站数据包遇到的第一个挂载点，它处在路由选择之前。
 
-- NF_INET_LOCAL_IN: 在IPv4中，这个挂载点位于方法ip_local_deliver中。对于所有发给当前主机的入站数据包，经过挂载点NF_INET_PRE_ROUTING和路由选择子系统之后，都将到达这个挂载点。
+- **NF_INET_LOCAL_IN**: 在IPv4中，这个挂载点位于方法ip_local_deliver中。对于所有发给当前主机的入站数据包，经过挂载点NF_INET_PRE_ROUTING和路由选择子系统之后，都将到达这个挂载点。
 
-- NF_INET_FORWARD: 在IPv4中，这个挂载点位于方法ip_forward()中。对于所有要转发的数据包，经过挂载点NF_INET_PRE_ROUTING和路由选择子系统之后，都将到达这个挂载点。
+- **NF_INET_FORWARD**: 在IPv4中，这个挂载点位于方法ip_forward()中。对于所有要转发的数据包，经过挂载点NF_INET_PRE_ROUTING和路由选择子系统之后，都将到达这个挂载点。
 
-- NF_INET_POST_ROUTING: 在IPv4中，这个挂载点位于方法ip_output()中。所有要转发的数据包，都在经过挂载点NF_INET_FORWARD后到达这个挂载点。另外，当前主机生成的数据包经过挂载点NF_INET_LOCAL_OUT后将到达这个挂载点。
+- **NF_INET_POST_ROUTING**: 在IPv4中，这个挂载点位于方法ip_output()中。所有要转发的数据包，都在经过挂载点NF_INET_FORWARD后到达这个挂载点。另外，当前主机生成的数据包经过挂载点NF_INET_LOCAL_OUT后将到达这个挂载点。
 
-- NF_INET_LOCAL_OUT: 在IPv4中，这个挂载点位于方法__ip_local_out中。当前主机生成的所有出站数据包都在经过路由查找和此挂载点之后，到达挂载点NF_INET_POST_ROUTING。
+- **NF_INET_LOCAL_OUT**: 在IPv4中，这个挂载点位于方法__ip_local_out中。当前主机生成的所有出站数据包都在经过路由查找和此挂载点之后，到达挂载点NF_INET_POST_ROUTING。
 
 内核网络代码中，一般通过宏NF_HOOK来调用在挂载点中注册的钩子函数。
 ```c
@@ -67,7 +67,7 @@ Netfilter钩子回调函数返回值必须是下述五个值之一，这些值�
 
 注册Netfilter钩子回调函数的方法有两个nf_register_net_hook和nf_register_net_hooks。
 4.13之前的内核版本还有两个注册接口nf_register_hook和nf_register_hooks，
-从4.13版本开始内核删除了这两个接口，这两个接口最终也是调用nf_register_net_hook。
+从4.13版本开始内核删除了这两个接口，这两个接口最终也是调用nf_register_net_hook，下面看下nf_register_net_hook:
 ```c
 int nf_register_net_hook(struct net *net, const struct nf_hook_ops *reg)
     __nf_register_net_hook(net, reg->pf, reg)
@@ -148,7 +148,7 @@ static const struct nf_hook_ops ipv4_conntrack_ops[] = {
 ```
 注册的最重要的连接跟踪回调函数是，NF_INET_PRE_ROUTING钩子回调函数ipv4_conntrack_in和NF_INET_LOCAL_OUT钩子回调函数ipv4_conntrack_local。
 这两个钩子函数的优先级为NF_IP_PRI_CONNTRACK(-200)，优先级较高。
-ipv4_conntrack_in和ipv4_conntrack_local对会调用到nf_conntrack_in，下一小结走读nf_conntrack_in。
+ipv4_conntrack_in和ipv4_conntrack_local都会调用到nf_conntrack_in，下一小结走读nf_conntrack_in。
 
 继续看下注册这个ipv4_conntrack_ops的地方。在内核版本4.9及以前，直接在函数nf_conntrack_l3proto_ipv4_init中调用nf_register_hooks来注册。
 4.10及以后内核，不在nf_conntrack_l3proto_ipv4_init中直接注册ipv4_conntrack_ops，看下相关代码：
@@ -204,10 +204,11 @@ static int nf_ct_netns_do_get(struct net *net, u8 nfproto)
 //调用nf_ct_netns_get地方有很多，主要应该是通过nft_ct_get_init和nft_nat_init
 ```
 
-下图展示了IPv4连接跟踪钩子函数在IPv4收发流程中的位置。
+
+下图展示了IPv4连接跟踪钩子函数在IPv4收发流程中的位置，其中绿色方块是netfilter的5个钩子挂载点，蓝色方块是连接跟踪模块注册的钩子函数:
 ![ipv4_conntrack_hooks.png](/assets/image/2022/08/ipv4_conntrack_hooks.png)
 
-用来区特定方向上的流的结构体是struct nf_conntrack_tuple：
+用来区分特定方向上的流的结构体是struct nf_conntrack_tuple：
 ```c
 struct nf_conntrack_tuple {
     struct nf_conntrack_man src;  //tuple的可操作部分
@@ -268,7 +269,7 @@ struct nf_conn {
 };
 ```
 
-看一下方法nf_conntrack_in()
+接下来看一下方法nf_conntrack_in():
 ```c
 unsigned int nf_conntrack_in(struct net *net, u_int8_t pf, unsigned int hooknum, struct sk_buff *skb)
     l3proto = __nf_ct_l3proto_find(pf);  //对于pf=PF_INET,PF_INET,返回的是全局变量nf_conntrack_l3proto_ipv4
@@ -313,7 +314,7 @@ static inline int nf_conntrack_confirm(struct sk_buff *skb)
 
 iptables由内核部分和用户空间部分组成，核心是内核部分。
 
-iptables的字面意思就是一些表，每个表由struct xt_table表示。IPv4中，注册和注销表的接口是ipt_register_table()和ipt_unregister_table()。
+iptables的字面意思就是ip表项，每个表由struct xt_table表示。IPv4中，注册和注销表的接口是ipt_register_table()和ipt_unregister_table()。
 ```c
 struct xt_table {
     struct list_head list;
@@ -338,7 +339,7 @@ int ipt_register_table(struct net *net, const struct xt_table *table,
 ```
 
 struct net对象包含IPv4和IPv6专用对象netns_ipv4和netns_ipv6，netns_ipv4和netns_ipv6又包含指向xt_table对象的指针。
-例如netns_ipv4包含iptable_filter iptable_mangle iptable_raw arptable_filter nat_table。
+例如netns_ipv4包含iptable_filter、iptable_mangle、iptable_raw、arptable_filter、nat_table。
 
 我们以iptable_filter过滤表为例，来进一步看下iptables的工作原理。
 ```c
@@ -366,9 +367,9 @@ static int __init iptable_filter_init(void)
                 ipt_register_table(net, &packet_filter, repl, filter_ops,
                  &net->ipv4.iptable_filter);
 ```
-总结下，内核提供了一些表，表里的条目由用户空间程序设置的。
+总结下，内核提供了一些表，表里的条目由用户空间程序设置。
 
-看一个用户空间iptables命令例子
+看一个用户空间iptables命令例子:
 ```c
 iptables -A INPUT -p udp --dport=5001 -j LOG --log-level 1
 ```
@@ -381,7 +382,7 @@ iptables -A INPUT -p tcp -m conntrack --ctstate ESTABLISHED -j LOG --log-level 1
 ```
 这个规则是根据连接跟踪状态来过滤数据包，将连接状态为ESTABLISHED的数据包转储到系统日志中。
 
-本文主要聚焦内核源码，关于用户空间的iptables命令，后面另起文章学习。
+**本文主要聚焦内核源码，关于用户空间的iptables命令，后面另起文章学习**
 
 ## NAT
 
