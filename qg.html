@@ -1,3 +1,163 @@
-<h1>qg test</h1>
-<h2>qg test</h2>
-<p>qg test</p>
+﻿<!DOCTYPE html>
+<html>
+  <head>
+  <title>起卦</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="favicon.ico" type="image/x-icon" rel=icon>
+  <link href="favicon.ico" type="image/x-icon" rel="shortcut icon">
+  <!-- Bootstrap -->
+  <link href="static/bootstrap.min.css" rel="stylesheet">
+  <link href="static/style.css" rel="stylesheet">
+  </head>
+ <body>
+
+  <div class="row inDate">
+    <div class="col-xs-3 text-center">
+      <strong>年</strong>
+    </div>
+    <div class="col-xs-3 text-center">
+      <strong>月</strong>
+    </div>
+    <div class="col-xs-3 text-center">
+      <strong>日</strong>
+    </div>
+    <div class="col-xs-3 text-center">
+      <strong>时</strong>
+    </div>
+  </div>
+
+  <div class="row inDate">
+    <div class="col-xs-3">
+      <input type="number" id="inYear" class="form-control" placeholder="年">        
+    </div>
+    <div class="col-xs-3">
+      <input type="number" id="inMonth" class="form-control" placeholder="月">
+    </div>
+    <div class="col-xs-3">
+      <input type="number" id="inDay" class="form-control" placeholder="日">
+    </div>
+    <div class="col-xs-3">
+      <input type="number" id="inHour" class="form-control" placeholder="时">
+    </div>
+  </div>
+  <div id="date" class="text-center"></div>
+  <p id="ganzhi" class="text-center"></p>
+  
+  <div class="row">
+    <div class="col-xs-7">
+      <div class="text-center"><strong id="zhuguaName">乾为天</strong></div>
+    </div>
+    <div class="col-xs-4">
+      <div class="text-center"><strong id="bianguaName"></strong></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-7">
+      <table class="table">
+        <tr id="yaoValue5">
+          <td class="text-center click-yao"><strong>|</strong></td>
+          <td><input type=checkbox class="inputDong"><span class="spanDong">动</span></td>
+          <td class="liuyao"></td>
+          <td class="liuqin"></td>
+          <td class="shiying"></td>
+          <td class="liushen"></td>
+        </tr>
+        <tr id="yaoValue4">
+          <td class="text-center click-yao"><strong>|</strong></td>
+          <td><input type=checkbox class="inputDong"><span class="spanDong">动</span></td>
+          <td class="liuyao"></td>
+          <td class="liuqin"></td>
+          <td class="shiying"></td>
+          <td class="liushen"></td>
+        </tr>
+        <tr id="yaoValue3">
+          <td class="text-center click-yao"><strong>|</strong></td>
+          <td><input type=checkbox class="inputDong"><span class="spanDong">动</span></td>
+          <td class="liuyao"></td>
+          <td class="liuqin"></td>
+          <td class="shiying"></td>
+          <td class="liushen"></td>
+        </tr>
+        <tr id="yaoValue2">
+          <td class="text-center click-yao"><strong>|</strong></td>
+          <td><input type=checkbox class="inputDong"><span class="spanDong">动</span></td>
+          <td class="liuyao"></td>
+          <td class="liuqin"></td>
+          <td class="shiying"></td>
+          <td class="liushen"></td>
+        </tr>
+        <tr id="yaoValue1">
+          <td class="text-center click-yao"><strong>|</strong></td>
+          <td><input type=checkbox class="inputDong"><span class="spanDong">动</span></td>
+          <td class="liuyao"></td>
+          <td class="liuqin"></td>
+          <td class="shiying"></td>
+          <td class="liushen"></td>
+        </tr>
+        <tr id="yaoValue0">
+          <td class="text-center click-yao"><strong>|</strong></td>
+          <td><input type=checkbox class="inputDong"><span class="spanDong">动</span></td>
+          <td class="liuyao"></td>
+          <td class="liuqin"></td>
+          <td class="shiying"></td>
+          <td class="liushen"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-xs-4" id="bianGua"></div>    
+  </div>
+  <div>
+    <button class="btn btn-primary" id="ok">确定</button>
+    <button class="btn btn-primary" id="reset">复位</button>
+  </div>
+    
+  <script type="text/template" id="bianguaTmpl">
+    <table class="table">
+        <tr>
+          <td class="text-center"><strong><%= yinYangArr[5] %></strong></td>
+          <td class="liuyao"><%= liuyaoArr[5] %></td>
+          <td class="liuqin"><%= liuqinArr[5] %></td>
+        </tr>
+        <tr>
+          <td class="text-center"><strong><%= yinYangArr[4] %></strong></td>
+          <td class="liuyao"><%= liuyaoArr[4] %></td>
+          <td class="liuqin"><%= liuqinArr[4] %></td>
+        </tr>
+        <tr>
+          <td class="text-center"><strong><%= yinYangArr[3] %></strong></td>
+          <td class="liuyao"><%= liuyaoArr[3] %></td>
+          <td class="liuqin"><%= liuqinArr[3] %></td>
+        </tr>
+        <tr>
+          <td class="text-center"><strong><%= yinYangArr[2] %></strong></td>
+          <td class="liuyao"><%= liuyaoArr[2] %></td>
+          <td class="liuqin"><%= liuqinArr[2] %></td>
+        </tr>
+        <tr>
+          <td class="text-center"><strong><%= yinYangArr[1] %></strong></td>
+          <td class="liuyao"><%= liuyaoArr[1] %></td>
+          <td class="liuqin"><%= liuqinArr[1] %></td>
+        </tr>
+        <tr>
+          <td class="text-center"><strong><%= yinYangArr[0] %></strong></td>
+          <td class="liuyao"><%= liuyaoArr[0] %></td>
+          <td class="liuqin"><%= liuqinArr[0] %></td>
+        </tr>
+      </table>
+  </script>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <!--
+    <script src="https://code.jquery.com/jquery.js"></script>
+    -->
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!--
+  <script src="dist/js/bootstrap.min.js"></script>
+    -->
+
+  <script src="static/underscore-min.js"></script>
+  <script src="static/zepto.min.js"></script>
+  <script src="static/calendar.js"></script>
+  <script src="static/qigua-db.js"></script>
+  <script src="static/qigua.js"></script>
+</body>
+</html>

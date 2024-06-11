@@ -1,0 +1,16 @@
+﻿body{
+	font-size: 20px;
+
+}
+.spanDong{
+	font-size: 14px;
+}
+
+.table>tbody>tr>td{
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.table>tbody>tr .click-yao{
+	padding-left: 10px;
+}
